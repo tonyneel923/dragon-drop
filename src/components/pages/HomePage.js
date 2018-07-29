@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Trash from 'react-icons/lib/fa/trash';
 
-import { getPhotos, pageForward, pageBackward } from '../../actions/photos';
+import { getPhotos, pageForward, pageBackward, deletePhoto } from '../../actions/photos';
 
 import PhotoCard from '../ui/PhotoCard/PhotoCard';
 import PhotoGrid from '../ui/PhotoGrid/PhotoGrid';
@@ -49,11 +49,21 @@ class HomePage extends React.Component {
           forwardAction={pageForward}
           backwardAction={pageBackward}
         />
-        <DeleteContainer>
+        <DeleteContainer onDragOver={this.onDragOver} onDrop={this.onDrop}>
           <Trash size={50} />
         </DeleteContainer>
       </Container>
     );
+  }
+
+  onDragOver = (event) => {
+    event.preventDefault();
+  }
+
+  onDrop = (event) => {
+    const id = event.dataTransfer.getData('id');
+    console.log('onDrop', id);
+    this.props.deletePhoto(parseInt(id));
   }
 }
 
@@ -69,6 +79,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPhotos: bindActionCreators(getPhotos, dispatch),
+    deletePhoto: bindActionCreators(deletePhoto, dispatch),
     pageForward: bindActionCreators(pageForward, dispatch),
     pageBackward: bindActionCreators(pageBackward, dispatch),
   };

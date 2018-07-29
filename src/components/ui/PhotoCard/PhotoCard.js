@@ -25,15 +25,20 @@ const Title = styled.div`
     font-size: 12px;
 `;
 
-const PhotoCard = ({ photoInfo, onDrag }) => {
+const PhotoCard = ({ photoInfo }) => {
     return (
-        <Container>
+        <Container draggable={true} onDragStart={(e) => onDragStart(e, photoInfo.get('id'))} >
             <Photo src={photoInfo.get('url')} />
             <TitleArea>
                 <Title>{photoInfo.get('title')}</Title>
             </TitleArea>
         </Container>
     );
+}
+
+const onDragStart = (event, id) => {
+    console.log('onDragStart', id);
+    event.dataTransfer.setData('id', id)
 }
 
 export default PhotoCard;

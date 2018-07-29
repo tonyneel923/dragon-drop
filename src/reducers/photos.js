@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 
 export default(state = fromJS({
+  eslint: {},
   photos: null,
   page: 0,
 }), payload) => {
@@ -9,7 +10,8 @@ export default(state = fromJS({
       return state.updateIn(['photos'],  () => fromJS(payload.response));
 
     case 'DELETE_PHOTO_SUCCESS':
-      return state.deleteIn(['photos', payload.id]);
+      const index = state.get('photos').findIndex(photo => photo.get('id') === payload.id);
+      return state.deleteIn(['photos', index]);
 
     case 'PAGE_FORWARD':
       const numberOfPhotos = state.get('photos').size;
