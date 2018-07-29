@@ -1,21 +1,27 @@
 import React from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Trash from 'react-icons/lib/fa/trash';
+
 import { getPhotos, pageForward, pageBackward } from '../../actions/photos';
+
 import PhotoCard from '../ui/PhotoCard/PhotoCard';
 import PhotoGrid from '../ui/PhotoGrid/PhotoGrid';
-import styled from 'styled-components';
 import PaginationBar from '../ui/PaginationBar/PaginationBar';
 
 const Container = styled.div`
   margin: 20px 20px;
 `;
 
-class HomePage extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+const DeleteContainer = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+  margin-top: 25px;
+  justify-content: center;
+`;
 
+class HomePage extends React.Component {
   componentDidMount() {
     this.props.getPhotos();
   }
@@ -43,6 +49,9 @@ class HomePage extends React.Component {
           forwardAction={pageForward}
           backwardAction={pageBackward}
         />
+        <DeleteContainer>
+          <Trash size={50} />
+        </DeleteContainer>
       </Container>
     );
   }
