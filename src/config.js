@@ -5,9 +5,9 @@
 
 // default config. Keys are environment variables. e.g. REACT_APP_SOME_VAR
 
-const baseUrl = 'https://localhost';
+const baseUrl = 'https://jsonplaceholder.typicode.com';
 
 export default {
   REACT_APP_VERSION: process.env.REACT_APP_VERSION,
-  REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || `${baseUrl}:3000/api/v1`,
+  REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL || baseUrl,
 };
