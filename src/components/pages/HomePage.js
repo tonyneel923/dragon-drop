@@ -1,23 +1,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPhotos } from '../../actions/photos';
+import { getPhotos, pageForward, pageBackward } from '../../actions/photos';
+import PhotoCard from '../ui/PhotoCard/PhotoCard';
+import PhotoGrid from '../ui/PhotoGrid/PhotoGrid';
+import styled from 'styled-components';
+import PaginationBar from '../ui/PaginationBar/PaginationBar';
+
+const Container = styled.div`
+  margin: 20px 20px;
+`;
 
 class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidMount() {
     this.props.getPhotos();
   }
 
   render() {
-    if (!this.props.photos) {
+    const { photos, pageForward, pageBackward, page } = this.props;
+
+    if (!photos) {
       return <span>loading ...</span>
     }
 
-    return <div>Home Page!</div>;
+    const pageSize = 10;
+    const lastItem = (page + 1)* pageSize;
+    const firstItem = lastItem - 10;
+    const photosOnPage = photos.slice(firstItem, lastItem);
+    const photoCards = photosOnPage.map(photo => <PhotoCard key={photo.get('id')} photoInfo={photo} />)
+
+    return (
+      <Container>
+        <PhotoGrid>
+          {photoCards}
+        </PhotoGrid>
+        <PaginationBar
+          page={page + 1}
+          forwardAction={pageForward}
+          backwardAction={pageBackward}
+        />
+      </Container>
+    );
   }
 }
 
@@ -25,13 +52,16 @@ const mapStateToProps = () => {
   return (state, props) => {
     return {
       photos: state.photos.get('photos'),
+      page: state.photos.get('page'),
     };
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPhotos: bindActionCreators(getPhotos, dispatch)
+    getPhotos: bindActionCreators(getPhotos, dispatch),
+    pageForward: bindActionCreators(pageForward, dispatch),
+    pageBackward: bindActionCreators(pageBackward, dispatch),
   };
 }
 
