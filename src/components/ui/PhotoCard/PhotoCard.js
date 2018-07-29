@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Photo = styled.div`
-    background-image: ${props => `url(${props.src})`};
-    width: 200px;
-    height: 150px;
+const Container = styled.div`
     display: flex;
     align-items: flex-end;
+`;
+
+const Photo = styled.img`
+    width: 200px;
+    height: 150px;
 `;
 
 const TitleArea = styled.div`
@@ -14,7 +16,8 @@ const TitleArea = styled.div`
     max-height: 20%;
     height: 50px;
     overflow: hidden;
-    width: 100%;
+    width: 200px;
+    position: absolute;
 `;
 
 const Title = styled.div`
@@ -24,11 +27,12 @@ const Title = styled.div`
 
 const PhotoCard = ({ photoInfo, onDrag }) => {
     return (
-        <Photo src={photoInfo.get('url')} >
+        <Container>
+            <Photo src={photoInfo.get('url')} />
             <TitleArea>
                 <Title>{photoInfo.get('title')}</Title>
             </TitleArea>
-        </Photo>
+        </Container>
     );
 }
 
